@@ -7,7 +7,7 @@
     <item
         android:id="@+id/nav_parrots"
         android:title="Попугаи"
-        android:icon="@drawable/ic_parrot" />
+        android:icon="@drawable/cockatoo" />
     <item
         android:id="@+id/nav_settings"
         android:title="Настройки"
