@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
+/*
 class ParrotsFragment : Fragment() {
 
     override fun onCreateView(
@@ -24,4 +24,4 @@ class ParrotsFragment : Fragment() {
 
         return view
     }
-}
+} */

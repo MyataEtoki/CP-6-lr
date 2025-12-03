@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Имя попугая" />
+
+    <EditText
+        android:id="@+id/input_species"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Вид" />
+
+    <EditText
+        android:id="@+id/input_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Возраст"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сохранить" />
+
+</LinearLayout>

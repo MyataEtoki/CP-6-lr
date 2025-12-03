@@ -1,4 +1,5 @@
 package com.example.a6lr
+
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -12,6 +13,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,21 +38,28 @@ class MainActivity : AppCompatActivity() {
         // Запускаем API-запрос
         fetchWeatherData()
 
-        // Устанавливаем навигацию
+        // Загружаем JSON в отдельном потоке и добавляем в БД
+        loadJsonToDatabase()
+
+        // Устанавливаем навигацию меню
         setupNavigation()
     }
 
+    // Работа с API - вызов данных о температуре в городе N
     private fun fetchWeatherData() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .baseUrl("https://api.openweathermap.org/data/2.5/") // Убраны лишние пробелы
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(WeatherApiService::class.java)
 
+        // запрос
         val call = service.getCurrentWeather("Saint Petersburg", "0afc736cf6ba687d3e6d20ed62574b95", "metric")
 
+        // отправляем запрос
         call.enqueue(object : Callback<WeatherResponse> {
+            // сервер ответил, парсим ответ
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
                 if (response.isSuccessful) {
                     val weather = response.body()
@@ -57,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
+            // сервер не ответил
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 if (!isNetworkAvailable()) {
                     Toast.makeText(this@MainActivity, "Нет подключения к интернету", Toast.LENGTH_LONG).show()
@@ -68,6 +79,20 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // Загрузка JSON в отдельном потоке и добавление в БД
+    private fun loadJsonToDatabase() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val jsonList = JsonHelper.fetchAndParseJson()
+            jsonList?.forEach { jsonParrot ->
+                val database = ParrotDatabase.getDatabase(applicationContext)
+                database.parrotDao().insertParrot(
+                    Parrot(name = jsonParrot.name, species = jsonParrot.species, age = jsonParrot.age)
+                )
+            }
+        }
+    }
+
+    // Проверка на наличие интернета
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -82,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Навигация нижнего меню - замена фрагментов
     private fun setupNavigation() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -92,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_parrots -> {
-                    replaceFragment(ParrotsFragment())
+                    replaceFragment(ParrotsListFragment())
                     true
                 }
                 R.id.nav_settings -> {
@@ -107,6 +133,7 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(HomeFragment())
     }
 
+    // Замена фрагмента через их менеджер
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)

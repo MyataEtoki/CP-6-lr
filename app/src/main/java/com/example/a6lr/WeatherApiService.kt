@@ -3,6 +3,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+// для отправки запроса api
 interface WeatherApiService {
     @GET("weather")
     fun getCurrentWeather(

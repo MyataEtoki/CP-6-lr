@@ -13,9 +13,10 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Разворачиваем макет фрагмента на экран
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // Находим TextView по новому ID
         val textView = view.findViewById<TextView>(R.id.home_text)
         textView.text = "Добро пожаловать в приложение про попугаев!"
 

@@ -1,5 +1,6 @@
 package com.example.a6lr
 
+// для парсинга ответа  api - json
 data class WeatherResponse(
     val name: String,
     val main: Main,

@@ -14,7 +14,6 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        // Находим TextView по новому ID
         val textView = view.findViewById<TextView>(R.id.settings_text)
         textView.text = "Настройки приложения (пока пусто)"
 
