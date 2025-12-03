@@ -1,9 +1,11 @@
 [
   {
+    "id": 0,
     "name": "Какаду",
     "species": "Какаду",
     "age": 5 },
   {
+    "id": 1,
     "name": "Jacob",
     "species": "Жако",
     "age": 42
