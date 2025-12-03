@@ -85,9 +85,12 @@ class MainActivity : AppCompatActivity() {
             val jsonList = JsonHelper.fetchAndParseJson()
             jsonList?.forEach { jsonParrot ->
                 val database = ParrotDatabase.getDatabase(applicationContext)
-                database.parrotDao().insertParrot(
-                    Parrot(name = jsonParrot.name, species = jsonParrot.species, age = jsonParrot.age)
-                )
+                val existingParrot = database.parrotDao().getParrotByName(jsonParrot.name)
+                if (existingParrot == null) {
+                    database.parrotDao().insertParrot(
+                        Parrot(name = jsonParrot.name, species = jsonParrot.species, age = jsonParrot.age)
+                    )
+                }
             }
         }
     }

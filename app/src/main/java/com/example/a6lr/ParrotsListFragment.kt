@@ -63,10 +63,12 @@ class ParrotsListFragment : Fragment() {
             .setTitle("Выберите действие")
             .setItems(arrayOf("Просмотр", "Удалить", "Обновить")) { _, which ->
                 when (which) {
-                    0 -> // Просмотр
-                        // Здесь можно открыть новый экран с деталями
-                        // или просто показать Toast
-                        android.widget.Toast.makeText(context, "Просмотр: ${parrot.name}", android.widget.Toast.LENGTH_SHORT).show()
+                    0 -> { // Просмотр
+                        val intent = Intent(requireContext(), ViewParrotActivity::class.java).apply {
+                            putExtra("parrotId", parrot.id)
+                        }
+                        startActivity(intent)
+                    }
                     1 -> {
                         val intent = Intent(requireContext(), DeleteParrotActivity::class.java).apply {
                             putExtra("parrotId", parrot.id)

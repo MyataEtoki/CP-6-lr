@@ -25,6 +25,7 @@
         <activity android:name=".AddParrotActivity" />
         <activity android:name=".UpdateParrotActivity" />
         <activity android:name=".DeleteParrotActivity" />
+        <activity android:name=".ViewParrotActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

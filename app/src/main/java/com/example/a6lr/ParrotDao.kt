@@ -18,4 +18,7 @@ interface ParrotDao {
 
     @Query("SELECT * FROM parrots WHERE id = :id")
     suspend fun getParrotById(id: Long): Parrot?
+
+    @Query("SELECT * FROM parrots WHERE name = :name LIMIT 1")
+    suspend fun getParrotByName(name: String): Parrot?
 }
